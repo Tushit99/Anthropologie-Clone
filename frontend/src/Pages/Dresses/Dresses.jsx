@@ -10,26 +10,29 @@ import { useLocation, useSearchParams } from "react-router-dom";
 import Skeletonbox from "../Skeleton/Skeleton";
 
 const Dresses = () => {
-  const {isLoading,dress} = useSelector((store) => store.dressManager);
+  const { isLoading, dress } = useSelector((store) => store.dressManager);
   const dispatch = useDispatch();
-  const [page, setPage] = useState(1);
-  const [price, setPrice] = useState("");
-  const location = useLocation();
   const [serchParams] = useSearchParams();
-  const limit = 12; 
-  const emptybox = [1,2,3,4,5,6,7,8,9];
+  const initialPage = serchParams.get("page");
+  const initialPriceOrder = serchParams.get("price");
+  const [page, setPage] = useState(initialPage || 1);
+  const [price, setPrice] = useState(initialPriceOrder || "");
+  const location = useLocation();
+  const limit = 12;
+  const emptybox = [1, 2, 3, 4, 5, 6, 7, 8, 9];
 
 
   let obj = {
     params: {
       brand: serchParams.getAll("brand"),
-      // _sort: serchParams.get("rating") && "rating",
       rating: serchParams.get("rating"),
       sort: serchParams.get("price"),
       page: serchParams.get("page"),
       limit: limit,
     },
   };
+
+  console.log(dress.length);
 
   useEffect(() => {
     dispatch(getDress(obj));
@@ -72,31 +75,31 @@ const Dresses = () => {
                   <MdArrowBackIosNew size={"30px"} />
                 </button>
                 <h2>{page}</h2>
-                <button onClick={() => setPage((prev) => prev + 1)}>
+                <button disabled={dress.length < 12} onClick={() => setPage((prev) => prev + 1)}>
                   <MdArrowForwardIos size={"30px"} />
                 </button>
-              </div>
+              </div> 
             </div>
           </div>
           <div className={style.mydress}>
-            {isLoading ? emptybox.map((e)=>(
-              <Skeletonbox key={e} /> 
+            {isLoading ? emptybox.map((e) => (
+              <Skeletonbox key={e} />
             )) : dress.map((e) => (
               <ProductBox key={e.id} category="dress" {...e} />
-            ))} 
-          </div> 
+            ))}
+          </div>
           <div className={style.pageboxbottom}>
-                <button
-                  disabled={page <= 1}
-                  onClick={() => setPage((prev) => prev - 1)}
-                >
-                  <MdArrowBackIosNew size={"30px"} />
-                </button>
-                <h2>{page}</h2>
-                <button onClick={() => setPage((prev) => prev + 1)}>
-                  <MdArrowForwardIos size={"30px"} />
-                </button>
-              </div>
+            <button
+              disabled={page <= 1}
+              onClick={() => setPage((prev) => prev - 1)}
+            >
+              <MdArrowBackIosNew size={"30px"} />
+            </button>
+            <h2>{page}</h2>
+            <button disabled={dress.length < 12} onClick={() => setPage((prev) => prev + 1)}>
+              <MdArrowForwardIos size={"30px"} />
+            </button>
+          </div>
         </div>
       </div>
     </div>

@@ -12,12 +12,14 @@ import { getCloting } from '../../Redux/Cloting/action';
 const Clothing = () => {
   const {cloths, isLoading} = useSelector((store) => store.clotingReducer);
   const dispatch = useDispatch();
-  const [page, setPage] = useState(1);
-  const [price, setPrice] = useState("");
-  const location = useLocation();
   const [serchParams] = useSearchParams();
-  const limit = 12;  
-  const emptybox = [1,2,3,4,5,6,7,8,9];
+  const initialPage = serchParams.get("page");
+  const initialPriceOrder = serchParams.get("price");
+  const [page, setPage] = useState(initialPage || 1);
+  const [price, setPrice] = useState(initialPriceOrder || "");
+  const location = useLocation();
+  const limit = 12;
+  const emptybox = [1, 2, 3, 4, 5, 6, 7, 8, 9]; 
 
   let obj = {
     params: {
@@ -71,7 +73,7 @@ const Clothing = () => {
                   <MdArrowBackIosNew size={"30px"} />
                 </button>
                 <h2>{page}</h2>
-                <button onClick={() => setPage((prev) => prev + 1)}>
+                <button disabled={cloths.length < 12} onClick={() => setPage((prev) => prev + 1)}>
                   <MdArrowForwardIos size={"30px"} />
                 </button>
               </div>
@@ -84,6 +86,18 @@ const Clothing = () => {
               <ProductBox key={e.id} {...e} category="cloths" />
             ))}  
           </div>
+          <div className={style.pagebox}>
+                <button
+                  disabled={page <= 1}
+                  onClick={() => setPage((prev) => prev - 1)}
+                >
+                  <MdArrowBackIosNew size={"30px"} />
+                </button>
+                <h2>{page}</h2>
+                <button disabled={cloths.length < 12} onClick={() => setPage((prev) => prev + 1)}>
+                  <MdArrowForwardIos size={"30px"} />
+                </button>
+              </div>
         </div>
       </div>
     </div>

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import style from "./Shoes.module.css"; 
+import style from "./Shoes.module.css";
 import { Select } from "@chakra-ui/react";
 import { useDispatch, useSelector } from "react-redux";
 import { MdArrowBackIosNew, MdArrowForwardIos } from "react-icons/md";
@@ -10,14 +10,16 @@ import ProductBox from "../ProduxtBox/ProductBox";
 import Skeletonbox from "../Skeleton/Skeleton";
 
 const Shoes = () => {
-  const {shoes, isLoading} = useSelector((store) => store.shoesReducer);
+  const { shoes, isLoading } = useSelector((store) => store.shoesReducer);
   const dispatch = useDispatch();
-  const [page, setPage] = useState(1);
-  const [price, setPrice] = useState("");
-  const location = useLocation();
   const [serchParams] = useSearchParams();
-  const limit = 12;  
-  const emptybox = [1,2,3,4,5,6,7,8,9];
+  const initialPage = serchParams.get("page");
+  const initialPriceOrder = serchParams.get("price");
+  const [page, setPage] = useState(initialPage || 1);
+  const [price, setPrice] = useState(initialPriceOrder || "");
+  const location = useLocation();
+  const limit = 12;
+  const emptybox = [1, 2, 3, 4, 5, 6, 7, 8, 9];
 
   let obj = {
     params: {
@@ -71,18 +73,30 @@ const Shoes = () => {
                   <MdArrowBackIosNew size={"30px"} />
                 </button>
                 <h2>{page}</h2>
-                <button onClick={() => setPage((prev) => prev + 1)}>
+                <button disabled={shoes.length < 12} onClick={() => setPage((prev) => prev + 1)}>
                   <MdArrowForwardIos size={"30px"} />
                 </button>
               </div>
-            </div> 
-          </div> 
+            </div>
+          </div>
           <div className={style.mydress}>
-            {isLoading ? emptybox.map((e)=>(
-              <Skeletonbox key={e} /> 
+            {isLoading ? emptybox.map((e) => (
+              <Skeletonbox key={e} />
             )) : shoes.map((e) => (
               <ProductBox key={e.id} {...e} category="shoes" />
-            ))}  
+            ))}
+          </div>
+          <div className={style.pageboxbottom}>
+            <button
+              disabled={page <= 1}
+              onClick={() => setPage((prev) => prev - 1)}
+            >
+              <MdArrowBackIosNew size={"30px"} />
+            </button>
+            <h2>{page}</h2>
+            <button disabled={shoes.length < 12} onClick={() => setPage((prev) => prev + 1)}>
+              <MdArrowForwardIos size={"30px"} />
+            </button>
           </div>
         </div>
       </div>

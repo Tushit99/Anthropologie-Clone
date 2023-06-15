@@ -6,9 +6,9 @@ import style from "./Sorting.module.css";
 const Sorting = ({ page, price }) => {
     const [serchParam, setSerchParams] = useSearchParams();
     const initalState = serchParam.getAll("brand");
-    const initalOrder = serchParam.get("order");
+    const initalOrder = serchParam.get("rating");   
     const [category, setCategory] = useState(initalState || []);
-    const [order, setorder] = useState(initalOrder || "");
+    const [order, setorder] = useState(initalOrder || "");  
 
     const handleChange = (e) => {
         let newCat = [...category];
@@ -28,7 +28,7 @@ const Sorting = ({ page, price }) => {
             page 
         };
         price !== "" && (params.price = price);
-        order && (params.rating = order); 
+        order && (params.rating = order);   
         setSerchParams(params);
     }, [category, order, price, page]);
 
@@ -40,7 +40,7 @@ const Sorting = ({ page, price }) => {
                 <hr />
                 <RadioGroup onChange={setorder} value={order}>
                     <Stack direction='column'>
-                        <Radio colorScheme='yellow' value='3'>
+                        <Radio colorScheme='yellow' value='3' defaultChecked={order} >
                             <span className={style.star}>
                                 &#9733;
                             </span>
@@ -49,9 +49,9 @@ const Sorting = ({ page, price }) => {
                             </span>
                             <span className={style.star}>
                                 &#9733;
-                            </span>
+                            </span> 
                         </Radio>
-                        <Radio colorScheme='yellow' value='4'>
+                        <Radio colorScheme='yellow' value='4' defaultChecked={order} >
                             <span className={style.star}>
                                 &#9733;
                             </span>
@@ -66,7 +66,7 @@ const Sorting = ({ page, price }) => {
                             </span>
 
                         </Radio>
-                        <Radio colorScheme='yellow' value='5'>
+                        <Radio colorScheme='yellow' value='5' defaultChecked={order} >
                             <span className={style.star}>
                                 &#9733;
                             </span>

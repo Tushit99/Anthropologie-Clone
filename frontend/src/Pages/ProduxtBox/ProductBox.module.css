@@ -11,10 +11,15 @@
   margin-left: 1px;
 }
 
-.head > p {
+.head>p:nth-child(1){
   font-weight: 100;
   margin-left: 1px;
   /* border: 1px solid black; */
+}
+
+.striked{
+  text-decoration:line-through;  
+  text-decoration-thickness: 2px;
 }
 
 .img{
